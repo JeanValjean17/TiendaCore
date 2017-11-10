@@ -1,0 +1,2 @@
+# TiendaCore
+Capacitación C#
