@@ -23,5 +23,21 @@ namespace Datos
                 }
             }
         }
+
+        public static bool RegistrarTienda(string nombreTienda, string direccion, string nit)
+        {
+            using (var context = new CapacitacionEntities())
+            {
+                try
+                {
+                    context.registrar_tienda(nombreTienda, nit, direccion);
+                    return true;
+                }
+                catch (Exception ex)
+                {
+                    throw ex;
+                }
+            }
+        }
     }
 }
