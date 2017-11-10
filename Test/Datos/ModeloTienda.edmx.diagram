@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="d232bcec07e04d2bb19c669d529fa045" Name="Diagram1">
+        <EntityTypeShape EntityType="CapacitacionModel.cliente" Width="1.5" PointX="3" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapacitacionModel.factura" Width="1.5" PointX="5.25" PointY="3.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapacitacionModel.medio_pago_facturas" Width="1.5" PointX="7.5" PointY="3.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapacitacionModel.medios_pagos" Width="1.5" PointX="5.25" PointY="11.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapacitacionModel.precio_productos" Width="1.5" PointX="7.5" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapacitacionModel.producto_facturas" Width="1.5" PointX="7.5" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapacitacionModel.producto" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapacitacionModel.sexo" Width="1.5" PointX="0.75" PointY="4.125" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapacitacionModel.tienda" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="CapacitacionModel.unidade" Width="1.5" PointX="3" PointY="8.125" IsExpanded="true" />
+        <AssociationConnector Association="CapacitacionModel.fk_clientes_sexo" ManuallyRouted="false" />
+        <AssociationConnector Association="CapacitacionModel.fk_facturas_clientes" ManuallyRouted="false" />
+        <AssociationConnector Association="CapacitacionModel.fk_facturas_tienda" ManuallyRouted="false" />
+        <AssociationConnector Association="CapacitacionModel.fk_medio_pago_factura" ManuallyRouted="false" />
+        <AssociationConnector Association="CapacitacionModel.fk_producto_factura_factura" ManuallyRouted="false" />
+        <AssociationConnector Association="CapacitacionModel.fk_medio_pago_medio_pago" ManuallyRouted="false" />
+        <AssociationConnector Association="CapacitacionModel.fk_precio_productos_productos" ManuallyRouted="false" />
+        <AssociationConnector Association="CapacitacionModel.fk_producto_factura_producto" ManuallyRouted="false" />
+        <AssociationConnector Association="CapacitacionModel.fk_productos_unidad" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

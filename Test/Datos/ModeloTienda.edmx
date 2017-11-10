@@ -1,0 +1,727 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="CapacitacionModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="clientes">
+          <Key>
+            <PropertyRef Name="id_cliente" />
+          </Key>
+          <Property Name="id_cliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="cedula" Type="int" />
+          <Property Name="id_sexo" Type="int" />
+        </EntityType>
+        <EntityType Name="facturas">
+          <Key>
+            <PropertyRef Name="id_factura" />
+          </Key>
+          <Property Name="id_factura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="fecha_facturacion" Type="datetime" />
+          <Property Name="codigo_factura" Type="int" />
+          <Property Name="despachador" Type="nvarchar" MaxLength="50" />
+          <Property Name="id_cliente" Type="int" />
+          <Property Name="id_tienda" Type="int" />
+        </EntityType>
+        <EntityType Name="medio_pago_facturas">
+          <Key>
+            <PropertyRef Name="id_medio_pago_factura" />
+          </Key>
+          <Property Name="id_medio_pago_factura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_medios_pago" Type="int" />
+          <Property Name="id_factura" Type="int" />
+          <Property Name="valor" Type="int" />
+        </EntityType>
+        <EntityType Name="medios_pagos">
+          <Key>
+            <PropertyRef Name="id_medios_pago" />
+          </Key>
+          <Property Name="id_medios_pago" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="precio_productos">
+          <Key>
+            <PropertyRef Name="id_precio_producto" />
+          </Key>
+          <Property Name="id_precio_producto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="precio" Type="float" />
+          <Property Name="fecha_inicio" Type="datetime" />
+          <Property Name="fecha_final" Type="datetime" />
+          <Property Name="id_producto" Type="int" />
+        </EntityType>
+        <EntityType Name="producto_facturas">
+          <Key>
+            <PropertyRef Name="id_producto_factura" />
+          </Key>
+          <Property Name="id_producto_factura" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="id_factura" Type="int" />
+          <Property Name="id_producto" Type="int" />
+          <Property Name="cantidad" Type="int" />
+          <Property Name="precio_unitario" Type="float" />
+        </EntityType>
+        <EntityType Name="productos">
+          <Key>
+            <PropertyRef Name="id_producto" />
+          </Key>
+          <Property Name="id_producto" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="nvarchar" MaxLength="50" />
+          <Property Name="id_unidad" Type="int" />
+        </EntityType>
+        <EntityType Name="sexos">
+          <Key>
+            <PropertyRef Name="id_sexo" />
+          </Key>
+          <Property Name="id_sexo" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_sexo" Type="nvarchar" MaxLength="10" />
+        </EntityType>
+        <EntityType Name="tiendas">
+          <Key>
+            <PropertyRef Name="id_tienda" />
+          </Key>
+          <Property Name="id_tienda" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_tienda" Type="nvarchar" MaxLength="50" />
+          <Property Name="direccion_tienda" Type="nvarchar" MaxLength="100" />
+          <Property Name="nit" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <EntityType Name="unidades">
+          <Key>
+            <PropertyRef Name="id_unidad" />
+          </Key>
+          <Property Name="id_unidad" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre_unidad" Type="nvarchar" MaxLength="50" />
+        </EntityType>
+        <Association Name="fk_clientes_sexo">
+          <End Role="sexos" Type="Self.sexos" Multiplicity="0..1" />
+          <End Role="clientes" Type="Self.clientes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sexos">
+              <PropertyRef Name="id_sexo" />
+            </Principal>
+            <Dependent Role="clientes">
+              <PropertyRef Name="id_sexo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_facturas_clientes">
+          <End Role="clientes" Type="Self.clientes" Multiplicity="0..1" />
+          <End Role="facturas" Type="Self.facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clientes">
+              <PropertyRef Name="id_cliente" />
+            </Principal>
+            <Dependent Role="facturas">
+              <PropertyRef Name="id_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_facturas_tienda">
+          <End Role="tiendas" Type="Self.tiendas" Multiplicity="0..1" />
+          <End Role="facturas" Type="Self.facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tiendas">
+              <PropertyRef Name="id_tienda" />
+            </Principal>
+            <Dependent Role="facturas">
+              <PropertyRef Name="id_tienda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_medio_pago_factura">
+          <End Role="facturas" Type="Self.facturas" Multiplicity="0..1" />
+          <End Role="medio_pago_facturas" Type="Self.medio_pago_facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="facturas">
+              <PropertyRef Name="id_factura" />
+            </Principal>
+            <Dependent Role="medio_pago_facturas">
+              <PropertyRef Name="id_factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_medio_pago_medio_pago">
+          <End Role="medios_pagos" Type="Self.medios_pagos" Multiplicity="0..1" />
+          <End Role="medio_pago_facturas" Type="Self.medio_pago_facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="medios_pagos">
+              <PropertyRef Name="id_medios_pago" />
+            </Principal>
+            <Dependent Role="medio_pago_facturas">
+              <PropertyRef Name="id_medios_pago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_precio_productos_productos">
+          <End Role="productos" Type="Self.productos" Multiplicity="0..1" />
+          <End Role="precio_productos" Type="Self.precio_productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productos">
+              <PropertyRef Name="id_producto" />
+            </Principal>
+            <Dependent Role="precio_productos">
+              <PropertyRef Name="id_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_producto_factura_factura">
+          <End Role="facturas" Type="Self.facturas" Multiplicity="0..1" />
+          <End Role="producto_facturas" Type="Self.producto_facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="facturas">
+              <PropertyRef Name="id_factura" />
+            </Principal>
+            <Dependent Role="producto_facturas">
+              <PropertyRef Name="id_factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_producto_factura_producto">
+          <End Role="productos" Type="Self.productos" Multiplicity="0..1" />
+          <End Role="producto_facturas" Type="Self.producto_facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productos">
+              <PropertyRef Name="id_producto" />
+            </Principal>
+            <Dependent Role="producto_facturas">
+              <PropertyRef Name="id_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_productos_unidad">
+          <End Role="unidades" Type="Self.unidades" Multiplicity="0..1" />
+          <End Role="productos" Type="Self.productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unidades">
+              <PropertyRef Name="id_unidad" />
+            </Principal>
+            <Dependent Role="productos">
+              <PropertyRef Name="id_unidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Function Name="registrar_cliente" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="tienda_core">
+          <Parameter Name="nombre_cliente" Type="nvarchar" Mode="In" />
+          <Parameter Name="cedula" Type="nvarchar" Mode="In" />
+          <Parameter Name="id_sexo" Type="int" Mode="In" />
+        </Function>
+        <Function Name="registrar_factura" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="tienda_core">
+          <Parameter Name="fecha_facturacion" Type="datetime" Mode="In" />
+          <Parameter Name="codigo_factura" Type="int" Mode="In" />
+          <Parameter Name="despachador" Type="nvarchar" Mode="In" />
+          <Parameter Name="nombre_cliente" Type="nvarchar" Mode="In" />
+          <Parameter Name="nombre_tienda" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="registrar_medio_pago" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="tienda_core">
+          <Parameter Name="nombre" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="registrar_precio_producto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="tienda_core">
+          <Parameter Name="precio" Type="float" Mode="In" />
+          <Parameter Name="fecha_inicio" Type="datetime" Mode="In" />
+          <Parameter Name="fecha_fin" Type="datetime" Mode="In" />
+        </Function>
+        <Function Name="registrar_producto" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="tienda_core">
+          <Parameter Name="nombre_producto" Type="nvarchar" Mode="In" />
+          <Parameter Name="id_unidad" Type="int" Mode="In" />
+        </Function>
+        <Function Name="registrar_programacion_precio" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="tienda_core">
+          <Parameter Name="precio" Type="float" Mode="In" />
+          <Parameter Name="fecha_inicio" Type="datetime" Mode="In" />
+          <Parameter Name="fecha_fin" Type="datetime" Mode="In" />
+          <Parameter Name="nombre_producto" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="registrar_tienda" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="tienda_core">
+          <Parameter Name="nombre_tienda" Type="nvarchar" Mode="In" />
+          <Parameter Name="nit" Type="nvarchar" Mode="In" />
+          <Parameter Name="direccion_tienda" Type="nvarchar" Mode="In" />
+        </Function>
+        <Function Name="registrar_unidad" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="false" ParameterTypeSemantics="AllowImplicitConversion" Schema="tienda_core">
+          <Parameter Name="nombre_unidad" Type="nvarchar" Mode="In" />
+        </Function>
+        <EntityContainer Name="CapacitacionModelStoreContainer">
+          <EntitySet Name="clientes" EntityType="Self.clientes" Schema="tienda_core" store:Type="Tables" />
+          <EntitySet Name="facturas" EntityType="Self.facturas" Schema="tienda_core" store:Type="Tables" />
+          <EntitySet Name="medio_pago_facturas" EntityType="Self.medio_pago_facturas" Schema="tienda_core" store:Type="Tables" />
+          <EntitySet Name="medios_pagos" EntityType="Self.medios_pagos" Schema="tienda_core" store:Type="Tables" />
+          <EntitySet Name="precio_productos" EntityType="Self.precio_productos" Schema="tienda_core" store:Type="Tables" />
+          <EntitySet Name="producto_facturas" EntityType="Self.producto_facturas" Schema="tienda_core" store:Type="Tables" />
+          <EntitySet Name="productos" EntityType="Self.productos" Schema="tienda_core" store:Type="Tables" />
+          <EntitySet Name="sexos" EntityType="Self.sexos" Schema="tienda_core" store:Type="Tables" />
+          <EntitySet Name="tiendas" EntityType="Self.tiendas" Schema="tienda_core" store:Type="Tables" />
+          <EntitySet Name="unidades" EntityType="Self.unidades" Schema="tienda_core" store:Type="Tables" />
+          <AssociationSet Name="fk_clientes_sexo" Association="Self.fk_clientes_sexo">
+            <End Role="sexos" EntitySet="sexos" />
+            <End Role="clientes" EntitySet="clientes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_facturas_clientes" Association="Self.fk_facturas_clientes">
+            <End Role="clientes" EntitySet="clientes" />
+            <End Role="facturas" EntitySet="facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_facturas_tienda" Association="Self.fk_facturas_tienda">
+            <End Role="tiendas" EntitySet="tiendas" />
+            <End Role="facturas" EntitySet="facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_medio_pago_factura" Association="Self.fk_medio_pago_factura">
+            <End Role="facturas" EntitySet="facturas" />
+            <End Role="medio_pago_facturas" EntitySet="medio_pago_facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_medio_pago_medio_pago" Association="Self.fk_medio_pago_medio_pago">
+            <End Role="medios_pagos" EntitySet="medios_pagos" />
+            <End Role="medio_pago_facturas" EntitySet="medio_pago_facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_precio_productos_productos" Association="Self.fk_precio_productos_productos">
+            <End Role="productos" EntitySet="productos" />
+            <End Role="precio_productos" EntitySet="precio_productos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_producto_factura_factura" Association="Self.fk_producto_factura_factura">
+            <End Role="facturas" EntitySet="facturas" />
+            <End Role="producto_facturas" EntitySet="producto_facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_producto_factura_producto" Association="Self.fk_producto_factura_producto">
+            <End Role="productos" EntitySet="productos" />
+            <End Role="producto_facturas" EntitySet="producto_facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_productos_unidad" Association="Self.fk_productos_unidad">
+            <End Role="unidades" EntitySet="unidades" />
+            <End Role="productos" EntitySet="productos" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="CapacitacionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="id_cliente" />
+          </Key>
+          <Property Name="id_cliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="cedula" Type="Int32" />
+          <Property Name="id_sexo" Type="Int32" />
+          <NavigationProperty Name="sexo" Relationship="Self.fk_clientes_sexo" FromRole="clientes" ToRole="sexos" />
+          <NavigationProperty Name="facturas" Relationship="Self.fk_facturas_clientes" FromRole="clientes" ToRole="facturas" />
+        </EntityType>
+        <EntityType Name="factura">
+          <Key>
+            <PropertyRef Name="id_factura" />
+          </Key>
+          <Property Name="id_factura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fecha_facturacion" Type="DateTime" Precision="3" />
+          <Property Name="codigo_factura" Type="Int32" />
+          <Property Name="despachador" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id_cliente" Type="Int32" />
+          <Property Name="id_tienda" Type="Int32" />
+          <NavigationProperty Name="cliente" Relationship="Self.fk_facturas_clientes" FromRole="facturas" ToRole="clientes" />
+          <NavigationProperty Name="tienda" Relationship="Self.fk_facturas_tienda" FromRole="facturas" ToRole="tiendas" />
+          <NavigationProperty Name="medio_pago_facturas" Relationship="Self.fk_medio_pago_factura" FromRole="facturas" ToRole="medio_pago_facturas" />
+          <NavigationProperty Name="producto_facturas" Relationship="Self.fk_producto_factura_factura" FromRole="facturas" ToRole="producto_facturas" />
+        </EntityType>
+        <EntityType Name="medio_pago_facturas">
+          <Key>
+            <PropertyRef Name="id_medio_pago_factura" />
+          </Key>
+          <Property Name="id_medio_pago_factura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_medios_pago" Type="Int32" />
+          <Property Name="id_factura" Type="Int32" />
+          <Property Name="valor" Type="Int32" />
+          <NavigationProperty Name="factura" Relationship="Self.fk_medio_pago_factura" FromRole="medio_pago_facturas" ToRole="facturas" />
+          <NavigationProperty Name="medios_pagos" Relationship="Self.fk_medio_pago_medio_pago" FromRole="medio_pago_facturas" ToRole="medios_pagos" />
+        </EntityType>
+        <EntityType Name="medios_pagos">
+          <Key>
+            <PropertyRef Name="id_medios_pago" />
+          </Key>
+          <Property Name="id_medios_pago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="medio_pago_facturas" Relationship="Self.fk_medio_pago_medio_pago" FromRole="medios_pagos" ToRole="medio_pago_facturas" />
+        </EntityType>
+        <EntityType Name="precio_productos">
+          <Key>
+            <PropertyRef Name="id_precio_producto" />
+          </Key>
+          <Property Name="id_precio_producto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="precio" Type="Double" />
+          <Property Name="fecha_inicio" Type="DateTime" Precision="3" />
+          <Property Name="fecha_final" Type="DateTime" Precision="3" />
+          <Property Name="id_producto" Type="Int32" />
+          <NavigationProperty Name="producto" Relationship="Self.fk_precio_productos_productos" FromRole="precio_productos" ToRole="productos" />
+        </EntityType>
+        <EntityType Name="producto_facturas">
+          <Key>
+            <PropertyRef Name="id_producto_factura" />
+          </Key>
+          <Property Name="id_producto_factura" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="id_factura" Type="Int32" />
+          <Property Name="id_producto" Type="Int32" />
+          <Property Name="cantidad" Type="Int32" />
+          <Property Name="precio_unitario" Type="Double" />
+          <NavigationProperty Name="factura" Relationship="Self.fk_producto_factura_factura" FromRole="producto_facturas" ToRole="facturas" />
+          <NavigationProperty Name="producto" Relationship="Self.fk_producto_factura_producto" FromRole="producto_facturas" ToRole="productos" />
+        </EntityType>
+        <EntityType Name="producto">
+          <Key>
+            <PropertyRef Name="id_producto" />
+          </Key>
+          <Property Name="id_producto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="id_unidad" Type="Int32" />
+          <NavigationProperty Name="precio_productos" Relationship="Self.fk_precio_productos_productos" FromRole="productos" ToRole="precio_productos" />
+          <NavigationProperty Name="producto_facturas" Relationship="Self.fk_producto_factura_producto" FromRole="productos" ToRole="producto_facturas" />
+          <NavigationProperty Name="unidade" Relationship="Self.fk_productos_unidad" FromRole="productos" ToRole="unidades" />
+        </EntityType>
+        <EntityType Name="sexo">
+          <Key>
+            <PropertyRef Name="id_sexo" />
+          </Key>
+          <Property Name="id_sexo" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_sexo" Type="String" MaxLength="10" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="clientes" Relationship="Self.fk_clientes_sexo" FromRole="sexos" ToRole="clientes" />
+        </EntityType>
+        <EntityType Name="tienda">
+          <Key>
+            <PropertyRef Name="id_tienda" />
+          </Key>
+          <Property Name="id_tienda" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_tienda" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="direccion_tienda" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+          <Property Name="nit" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="facturas" Relationship="Self.fk_facturas_tienda" FromRole="tiendas" ToRole="facturas" />
+        </EntityType>
+        <EntityType Name="unidade">
+          <Key>
+            <PropertyRef Name="id_unidad" />
+          </Key>
+          <Property Name="id_unidad" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre_unidad" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="productos" Relationship="Self.fk_productos_unidad" FromRole="unidades" ToRole="productos" />
+        </EntityType>
+        <Association Name="fk_clientes_sexo">
+          <End Role="sexos" Type="Self.sexo" Multiplicity="0..1" />
+          <End Role="clientes" Type="Self.cliente" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="sexos">
+              <PropertyRef Name="id_sexo" />
+            </Principal>
+            <Dependent Role="clientes">
+              <PropertyRef Name="id_sexo" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_facturas_clientes">
+          <End Role="clientes" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="facturas" Type="Self.factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="clientes">
+              <PropertyRef Name="id_cliente" />
+            </Principal>
+            <Dependent Role="facturas">
+              <PropertyRef Name="id_cliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_facturas_tienda">
+          <End Role="tiendas" Type="Self.tienda" Multiplicity="0..1" />
+          <End Role="facturas" Type="Self.factura" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="tiendas">
+              <PropertyRef Name="id_tienda" />
+            </Principal>
+            <Dependent Role="facturas">
+              <PropertyRef Name="id_tienda" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_medio_pago_factura">
+          <End Role="facturas" Type="Self.factura" Multiplicity="0..1" />
+          <End Role="medio_pago_facturas" Type="Self.medio_pago_facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="facturas">
+              <PropertyRef Name="id_factura" />
+            </Principal>
+            <Dependent Role="medio_pago_facturas">
+              <PropertyRef Name="id_factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_producto_factura_factura">
+          <End Role="facturas" Type="Self.factura" Multiplicity="0..1" />
+          <End Role="producto_facturas" Type="Self.producto_facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="facturas">
+              <PropertyRef Name="id_factura" />
+            </Principal>
+            <Dependent Role="producto_facturas">
+              <PropertyRef Name="id_factura" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_medio_pago_medio_pago">
+          <End Role="medios_pagos" Type="Self.medios_pagos" Multiplicity="0..1" />
+          <End Role="medio_pago_facturas" Type="Self.medio_pago_facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="medios_pagos">
+              <PropertyRef Name="id_medios_pago" />
+            </Principal>
+            <Dependent Role="medio_pago_facturas">
+              <PropertyRef Name="id_medios_pago" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_precio_productos_productos">
+          <End Role="productos" Type="Self.producto" Multiplicity="0..1" />
+          <End Role="precio_productos" Type="Self.precio_productos" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productos">
+              <PropertyRef Name="id_producto" />
+            </Principal>
+            <Dependent Role="precio_productos">
+              <PropertyRef Name="id_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_producto_factura_producto">
+          <End Role="productos" Type="Self.producto" Multiplicity="0..1" />
+          <End Role="producto_facturas" Type="Self.producto_facturas" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="productos">
+              <PropertyRef Name="id_producto" />
+            </Principal>
+            <Dependent Role="producto_facturas">
+              <PropertyRef Name="id_producto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="fk_productos_unidad">
+          <End Role="unidades" Type="Self.unidade" Multiplicity="0..1" />
+          <End Role="productos" Type="Self.producto" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="unidades">
+              <PropertyRef Name="id_unidad" />
+            </Principal>
+            <Dependent Role="productos">
+              <PropertyRef Name="id_unidad" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="CapacitacionEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="clientes" EntityType="Self.cliente" />
+          <EntitySet Name="facturas" EntityType="Self.factura" />
+          <EntitySet Name="medio_pago_facturas" EntityType="Self.medio_pago_facturas" />
+          <EntitySet Name="medios_pagos" EntityType="Self.medios_pagos" />
+          <EntitySet Name="precio_productos" EntityType="Self.precio_productos" />
+          <EntitySet Name="producto_facturas" EntityType="Self.producto_facturas" />
+          <EntitySet Name="productos" EntityType="Self.producto" />
+          <EntitySet Name="sexos" EntityType="Self.sexo" />
+          <EntitySet Name="tiendas" EntityType="Self.tienda" />
+          <EntitySet Name="unidades" EntityType="Self.unidade" />
+          <AssociationSet Name="fk_clientes_sexo" Association="Self.fk_clientes_sexo">
+            <End Role="sexos" EntitySet="sexos" />
+            <End Role="clientes" EntitySet="clientes" />
+          </AssociationSet>
+          <AssociationSet Name="fk_facturas_clientes" Association="Self.fk_facturas_clientes">
+            <End Role="clientes" EntitySet="clientes" />
+            <End Role="facturas" EntitySet="facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_facturas_tienda" Association="Self.fk_facturas_tienda">
+            <End Role="tiendas" EntitySet="tiendas" />
+            <End Role="facturas" EntitySet="facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_medio_pago_factura" Association="Self.fk_medio_pago_factura">
+            <End Role="facturas" EntitySet="facturas" />
+            <End Role="medio_pago_facturas" EntitySet="medio_pago_facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_producto_factura_factura" Association="Self.fk_producto_factura_factura">
+            <End Role="facturas" EntitySet="facturas" />
+            <End Role="producto_facturas" EntitySet="producto_facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_medio_pago_medio_pago" Association="Self.fk_medio_pago_medio_pago">
+            <End Role="medios_pagos" EntitySet="medios_pagos" />
+            <End Role="medio_pago_facturas" EntitySet="medio_pago_facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_precio_productos_productos" Association="Self.fk_precio_productos_productos">
+            <End Role="productos" EntitySet="productos" />
+            <End Role="precio_productos" EntitySet="precio_productos" />
+          </AssociationSet>
+          <AssociationSet Name="fk_producto_factura_producto" Association="Self.fk_producto_factura_producto">
+            <End Role="productos" EntitySet="productos" />
+            <End Role="producto_facturas" EntitySet="producto_facturas" />
+          </AssociationSet>
+          <AssociationSet Name="fk_productos_unidad" Association="Self.fk_productos_unidad">
+            <End Role="unidades" EntitySet="unidades" />
+            <End Role="productos" EntitySet="productos" />
+          </AssociationSet>
+          <FunctionImport Name="registrar_cliente">
+            <Parameter Name="nombre_cliente" Mode="In" Type="String" />
+            <Parameter Name="cedula" Mode="In" Type="String" />
+            <Parameter Name="id_sexo" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="registrar_factura" ReturnType="Collection(String)">
+            <Parameter Name="fecha_facturacion" Mode="In" Type="DateTime" />
+            <Parameter Name="codigo_factura" Mode="In" Type="Int32" />
+            <Parameter Name="despachador" Mode="In" Type="String" />
+            <Parameter Name="nombre_cliente" Mode="In" Type="String" />
+            <Parameter Name="nombre_tienda" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="registrar_medio_pago">
+            <Parameter Name="nombre" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="registrar_precio_producto">
+            <Parameter Name="precio" Mode="In" Type="Double" />
+            <Parameter Name="fecha_inicio" Mode="In" Type="DateTime" />
+            <Parameter Name="fecha_fin" Mode="In" Type="DateTime" />
+          </FunctionImport>
+          <FunctionImport Name="registrar_producto">
+            <Parameter Name="nombre_producto" Mode="In" Type="String" />
+            <Parameter Name="id_unidad" Mode="In" Type="Int32" />
+          </FunctionImport>
+          <FunctionImport Name="registrar_programacion_precio" ReturnType="Collection(String)">
+            <Parameter Name="precio" Mode="In" Type="Double" />
+            <Parameter Name="fecha_inicio" Mode="In" Type="DateTime" />
+            <Parameter Name="fecha_fin" Mode="In" Type="DateTime" />
+            <Parameter Name="nombre_producto" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="registrar_tienda">
+            <Parameter Name="nombre_tienda" Mode="In" Type="String" />
+            <Parameter Name="nit" Mode="In" Type="String" />
+            <Parameter Name="direccion_tienda" Mode="In" Type="String" />
+          </FunctionImport>
+          <FunctionImport Name="registrar_unidad">
+            <Parameter Name="nombre_unidad" Mode="In" Type="String" />
+          </FunctionImport>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="CapacitacionModelStoreContainer" CdmEntityContainer="CapacitacionEntities">
+          <EntitySetMapping Name="clientes">
+            <EntityTypeMapping TypeName="CapacitacionModel.cliente">
+              <MappingFragment StoreEntitySet="clientes">
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="cedula" ColumnName="cedula" />
+                <ScalarProperty Name="id_sexo" ColumnName="id_sexo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="facturas">
+            <EntityTypeMapping TypeName="CapacitacionModel.factura">
+              <MappingFragment StoreEntitySet="facturas">
+                <ScalarProperty Name="id_factura" ColumnName="id_factura" />
+                <ScalarProperty Name="fecha_facturacion" ColumnName="fecha_facturacion" />
+                <ScalarProperty Name="codigo_factura" ColumnName="codigo_factura" />
+                <ScalarProperty Name="despachador" ColumnName="despachador" />
+                <ScalarProperty Name="id_cliente" ColumnName="id_cliente" />
+                <ScalarProperty Name="id_tienda" ColumnName="id_tienda" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="medio_pago_facturas">
+            <EntityTypeMapping TypeName="CapacitacionModel.medio_pago_facturas">
+              <MappingFragment StoreEntitySet="medio_pago_facturas">
+                <ScalarProperty Name="id_medio_pago_factura" ColumnName="id_medio_pago_factura" />
+                <ScalarProperty Name="id_medios_pago" ColumnName="id_medios_pago" />
+                <ScalarProperty Name="id_factura" ColumnName="id_factura" />
+                <ScalarProperty Name="valor" ColumnName="valor" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="medios_pagos">
+            <EntityTypeMapping TypeName="CapacitacionModel.medios_pagos">
+              <MappingFragment StoreEntitySet="medios_pagos">
+                <ScalarProperty Name="id_medios_pago" ColumnName="id_medios_pago" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="precio_productos">
+            <EntityTypeMapping TypeName="CapacitacionModel.precio_productos">
+              <MappingFragment StoreEntitySet="precio_productos">
+                <ScalarProperty Name="id_precio_producto" ColumnName="id_precio_producto" />
+                <ScalarProperty Name="precio" ColumnName="precio" />
+                <ScalarProperty Name="fecha_inicio" ColumnName="fecha_inicio" />
+                <ScalarProperty Name="fecha_final" ColumnName="fecha_final" />
+                <ScalarProperty Name="id_producto" ColumnName="id_producto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="producto_facturas">
+            <EntityTypeMapping TypeName="CapacitacionModel.producto_facturas">
+              <MappingFragment StoreEntitySet="producto_facturas">
+                <ScalarProperty Name="id_producto_factura" ColumnName="id_producto_factura" />
+                <ScalarProperty Name="id_factura" ColumnName="id_factura" />
+                <ScalarProperty Name="id_producto" ColumnName="id_producto" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="precio_unitario" ColumnName="precio_unitario" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="productos">
+            <EntityTypeMapping TypeName="CapacitacionModel.producto">
+              <MappingFragment StoreEntitySet="productos">
+                <ScalarProperty Name="id_producto" ColumnName="id_producto" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="id_unidad" ColumnName="id_unidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="sexos">
+            <EntityTypeMapping TypeName="CapacitacionModel.sexo">
+              <MappingFragment StoreEntitySet="sexos">
+                <ScalarProperty Name="id_sexo" ColumnName="id_sexo" />
+                <ScalarProperty Name="nombre_sexo" ColumnName="nombre_sexo" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="tiendas">
+            <EntityTypeMapping TypeName="CapacitacionModel.tienda">
+              <MappingFragment StoreEntitySet="tiendas">
+                <ScalarProperty Name="id_tienda" ColumnName="id_tienda" />
+                <ScalarProperty Name="nombre_tienda" ColumnName="nombre_tienda" />
+                <ScalarProperty Name="direccion_tienda" ColumnName="direccion_tienda" />
+                <ScalarProperty Name="nit" ColumnName="nit" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="unidades">
+            <EntityTypeMapping TypeName="CapacitacionModel.unidade">
+              <MappingFragment StoreEntitySet="unidades">
+                <ScalarProperty Name="id_unidad" ColumnName="id_unidad" />
+                <ScalarProperty Name="nombre_unidad" ColumnName="nombre_unidad" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <FunctionImportMapping FunctionImportName="registrar_cliente" FunctionName="CapacitacionModel.Store.registrar_cliente" />
+          <FunctionImportMapping FunctionImportName="registrar_factura" FunctionName="CapacitacionModel.Store.registrar_factura" />
+          <FunctionImportMapping FunctionImportName="registrar_medio_pago" FunctionName="CapacitacionModel.Store.registrar_medio_pago" />
+          <FunctionImportMapping FunctionImportName="registrar_precio_producto" FunctionName="CapacitacionModel.Store.registrar_precio_producto" />
+          <FunctionImportMapping FunctionImportName="registrar_producto" FunctionName="CapacitacionModel.Store.registrar_producto" />
+          <FunctionImportMapping FunctionImportName="registrar_programacion_precio" FunctionName="CapacitacionModel.Store.registrar_programacion_precio" />
+          <FunctionImportMapping FunctionImportName="registrar_tienda" FunctionName="CapacitacionModel.Store.registrar_tienda" />
+          <FunctionImportMapping FunctionImportName="registrar_unidad" FunctionName="CapacitacionModel.Store.registrar_unidad" />
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>
