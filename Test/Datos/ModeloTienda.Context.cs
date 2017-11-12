@@ -38,21 +38,21 @@ namespace Datos
         public virtual DbSet<tienda> tiendas { get; set; }
         public virtual DbSet<unidade> unidades { get; set; }
     
-        public virtual int registrar_cliente(string nombre_cliente, string cedula, Nullable<int> id_sexo)
+        public virtual ObjectResult<Nullable<short>> registrar_cliente(string nombre_cliente, Nullable<int> cedula, Nullable<int> id_sexo)
         {
             var nombre_clienteParameter = nombre_cliente != null ?
                 new ObjectParameter("nombre_cliente", nombre_cliente) :
                 new ObjectParameter("nombre_cliente", typeof(string));
     
-            var cedulaParameter = cedula != null ?
+            var cedulaParameter = cedula.HasValue ?
                 new ObjectParameter("cedula", cedula) :
-                new ObjectParameter("cedula", typeof(string));
+                new ObjectParameter("cedula", typeof(int));
     
             var id_sexoParameter = id_sexo.HasValue ?
                 new ObjectParameter("id_sexo", id_sexo) :
                 new ObjectParameter("id_sexo", typeof(int));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("registrar_cliente", nombre_clienteParameter, cedulaParameter, id_sexoParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction<Nullable<short>>("registrar_cliente", nombre_clienteParameter, cedulaParameter, id_sexoParameter);
         }
     
         public virtual ObjectResult<string> registrar_factura(Nullable<System.DateTime> fecha_facturacion, Nullable<int> codigo_factura, string despachador, string nombre_cliente, string nombre_tienda)
@@ -89,7 +89,7 @@ namespace Datos
             return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("registrar_medio_pago", nombreParameter);
         }
     
-        public virtual int registrar_precio_producto(Nullable<double> precio, Nullable<System.DateTime> fecha_inicio, Nullable<System.DateTime> fecha_fin)
+        public virtual int registrar_precio_producto(Nullable<double> precio, Nullable<System.DateTime> fecha_inicio, Nullable<System.DateTime> fecha_fin, string nombre_producto)
         {
             var precioParameter = precio.HasValue ?
                 new ObjectParameter("precio", precio) :
@@ -103,20 +103,24 @@ namespace Datos
                 new ObjectParameter("fecha_fin", fecha_fin) :
                 new ObjectParameter("fecha_fin", typeof(System.DateTime));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("registrar_precio_producto", precioParameter, fecha_inicioParameter, fecha_finParameter);
+            var nombre_productoParameter = nombre_producto != null ?
+                new ObjectParameter("nombre_producto", nombre_producto) :
+                new ObjectParameter("nombre_producto", typeof(string));
+    
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("registrar_precio_producto", precioParameter, fecha_inicioParameter, fecha_finParameter, nombre_productoParameter);
         }
     
-        public virtual int registrar_producto(string nombre_producto, Nullable<int> id_unidad)
+        public virtual int registrar_producto(string nombre_producto, string nombre_unidad)
         {
             var nombre_productoParameter = nombre_producto != null ?
                 new ObjectParameter("nombre_producto", nombre_producto) :
                 new ObjectParameter("nombre_producto", typeof(string));
     
-            var id_unidadParameter = id_unidad.HasValue ?
-                new ObjectParameter("id_unidad", id_unidad) :
-                new ObjectParameter("id_unidad", typeof(int));
+            var nombre_unidadParameter = nombre_unidad != null ?
+                new ObjectParameter("nombre_unidad", nombre_unidad) :
+                new ObjectParameter("nombre_unidad", typeof(string));
     
-            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("registrar_producto", nombre_productoParameter, id_unidadParameter);
+            return ((IObjectContextAdapter)this).ObjectContext.ExecuteFunction("registrar_producto", nombre_productoParameter, nombre_unidadParameter);
         }
     
         public virtual ObjectResult<string> registrar_programacion_precio(Nullable<double> precio, Nullable<System.DateTime> fecha_inicio, Nullable<System.DateTime> fecha_fin, string nombre_producto)
